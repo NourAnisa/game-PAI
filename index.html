@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Petualangan Penjelajah PAI — Media Pembelajaran Interaktif Pendidikan Agama Islam</title>
+    
+    <!-- Google Fonts & Tailwind CSS CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕌</text></svg>">
+</head>
+
+<body class="islamic-pattern-bg min-h-screen flex flex-col justify-between p-3 md:p-6 overflow-x-hidden">
+
+    <!-- Selebrasi Confetti Canvas -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- TOP HEADER -->
+    <header class="max-w-5xl mx-auto w-full bg-emerald-950/80 backdrop-blur-md border border-emerald-500/30 rounded-3xl p-4 shadow-2xl mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.game.showView('home')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 text-emerald-950 flex items-center justify-center text-2xl font-black shadow-lg border border-amber-300">
+                    🕌
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                        Penjelajah PAI
+                        <span class="text-xs bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/40 font-bold">SD / MI</span>
+                    </h1>
+                    <p class="text-xs text-emerald-200/80 font-medium">Petualangan Interaktif Pendidikan Agama Islam & Budi Pekerti</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar & Controls -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex flex-col text-right">
+                    <span id="statStudentName" class="text-xs font-bold text-amber-300">Sahabat Cilik PAI</span>
+                    <span id="statRankTitle" class="text-[11px] text-emerald-300 font-semibold">Thalibul Ilmi</span>
+                </div>
+                <div class="bg-black/40 border border-emerald-500/30 px-3 py-1.5 rounded-2xl flex items-center gap-3">
+                    <div class="text-center">
+                        <span class="text-[10px] text-white/60 block uppercase font-bold">Skor</span>
+                        <span id="statTotalScore" class="text-sm font-black text-amber-300">0</span>
+                    </div>
+                    <div class="w-[1px] h-6 bg-white/10"></div>
+                    <div class="text-center">
+                        <span class="text-[10px] text-white/60 block uppercase font-bold">Bintang</span>
+                        <span id="statTotalStars" class="text-sm font-black text-yellow-400">0 ⭐</span>
+                    </div>
+                </div>
+                <button id="btnMute" class="bg-emerald-900/80 hover:bg-emerald-800 border border-emerald-500/40 text-emerald-100 text-xs font-bold px-3 py-2 rounded-xl transition">
+                    🔊 Suara: Aktif
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="max-w-5xl mx-auto w-full flex-1">
+
+        <!-- ==========================================
+             VIEW 1: HOME (BERANDA)
+             ========================================== -->
+        <section id="view-home" class="game-view animate-fadeIn">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-800 via-teal-900 to-emerald-950 border border-emerald-500/30 p-6 md:p-10 shadow-2xl mb-8">
+                <div class="relative z-10 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 px-3 py-1 rounded-full text-xs font-bold border border-amber-400/30 mb-4">
+                        <span>✨</span> Kurikulum Merdeka PAI Terpadu
+                    </div>
+                    <h2 class="text-2xl md:text-4xl font-black text-white leading-tight mb-3">
+                        Selamat Datang di Ekspedisi Cahaya Hikmah Islam! 🌟
+                    </h2>
+                    <p class="text-emerald-100/90 text-sm md:text-base leading-relaxed mb-6">
+                        Mari belajar Al-Qur'an, Aqidah Tauhid, Fiqih Ibadah, Kisah 25 Nabi & Rasul, serta Akhlak Mulia melalui tantangan petualangan seru dan interaktif.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="window.game.showView('islands')" class="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-emerald-950 font-black px-6 py-3.5 rounded-2xl text-base shadow-xl hover:scale-105 transition flex items-center gap-2">
+                            <span>🚀</span> MULAI PETUALANGAN PULAU
+                        </button>
+                        <button onclick="window.game.startCerdasCermat()" class="bg-emerald-900/80 hover:bg-emerald-800/90 border border-emerald-500/40 text-white font-bold px-5 py-3.5 rounded-2xl text-sm shadow transition flex items-center gap-2">
+                            <span>⚡</span> Cerdas Cermat Kilat (15s)
+                        </button>
+                        <button onclick="window.game.renderCertificateView()" class="bg-black/30 hover:bg-black/50 border border-white/20 text-amber-200 font-bold px-4 py-3.5 rounded-2xl text-sm shadow transition flex items-center gap-2">
+                            <span>📜</span> Sertifikat Prestasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 Pilar Kurikulum PAI Highlight -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
+                <div class="bg-emerald-950/60 border border-emerald-500/20 rounded-2xl p-4 text-center">
+                    <span class="text-3xl block mb-1">📖</span>
+                    <h4 class="text-xs font-black text-amber-300 uppercase">Al-Qur'an & Tajwid</h4>
+                    <p class="text-[11px] text-white/60">Tafsir & Hukum Bacaan</p>
+                </div>
+                <div class="bg-emerald-950/60 border border-emerald-500/20 rounded-2xl p-4 text-center">
+                    <span class="text-3xl block mb-1">💎</span>
+                    <h4 class="text-xs font-black text-amber-300 uppercase">Aqidah Tauhid</h4>
+                    <p class="text-[11px] text-white/60">Rukun Iman & Asmaul Husna</p>
+                </div>
+                <div class="bg-emerald-950/60 border border-emerald-500/20 rounded-2xl p-4 text-center">
+                    <span class="text-3xl block mb-1">🕌</span>
+                    <h4 class="text-xs font-black text-amber-300 uppercase">Fiqih Ibadah</h4>
+                    <p class="text-[11px] text-white/60">Wudhu, Sholat & Zakat</p>
+                </div>
+                <div class="bg-emerald-950/60 border border-emerald-500/20 rounded-2xl p-4 text-center">
+                    <span class="text-3xl block mb-1">📜</span>
+                    <h4 class="text-xs font-black text-amber-300 uppercase">Tarikh & SKI</h4>
+                    <p class="text-[11px] text-white/60">25 Nabi & Khulafaur Rasyidin</p>
+                </div>
+                <div class="bg-emerald-950/60 border border-emerald-500/20 rounded-2xl p-4 text-center col-span-2 sm:col-span-1">
+                    <span class="text-3xl block mb-1">🌟</span>
+                    <h4 class="text-xs font-black text-amber-300 uppercase">Akhlak Mulia</h4>
+                    <p class="text-[11px] text-white/60">Budi Pekerti & Adab</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 2: PETA 5 PULAU HIKMAH
+             ========================================== -->
+        <section id="view-islands" class="game-view hidden animate-fadeIn">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <span>🗺️</span> Peta 5 Pulau Hikmah
+                    </h2>
+                    <p class="text-xs text-emerald-200">Pilih pulau untuk menuntaskan level tantangan berhadiah bintang!</p>
+                </div>
+                <button onclick="window.game.showView('home')" class="bg-emerald-900/60 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl border border-emerald-500/30 transition">
+                    ◀ Kembali ke Beranda
+                </button>
+            </div>
+
+            <!-- Grid Kartu Pulau -->
+            <div id="islandsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Di-render dinamis oleh game.js -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 3: DETAIL LEVEL DALAM PULAU
+             ========================================== -->
+        <section id="view-island-detail" class="game-view hidden animate-fadeIn">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <span id="islandDetailIcon" class="text-4xl filter drop-shadow">📖</span>
+                    <div>
+                        <h2 id="islandDetailTitle" class="text-2xl font-black text-white">Pulau Al-Qur'an</h2>
+                        <p id="islandDetailDesc" class="text-xs text-emerald-200">Tafsir dan tajwid surat pendek.</p>
+                    </div>
+                </div>
+                <button onclick="window.game.showView('islands')" class="bg-emerald-900/60 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl border border-emerald-500/30 transition">
+                    ◀ Peta Pulau
+                </button>
+            </div>
+
+            <div id="islandLevelsContainer" class="space-y-4 max-w-3xl mx-auto mb-8">
+                <!-- Level card items injected dynamically -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 4: GAMEPLAY KUIS PILIHAN GANDA
+             ========================================== -->
+        <section id="view-gameplay-quiz" class="game-view hidden animate-fadeIn">
+            <div class="max-w-2xl mx-auto bg-emerald-950/90 border border-emerald-500/40 rounded-3xl p-6 md:p-8 shadow-2xl mb-8">
+                <!-- Header Kuis -->
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                    <div>
+                        <span id="quizHeaderIsland" class="text-xs font-bold text-amber-300 uppercase block mb-0.5">Pulau Al-Qur'an</span>
+                        <h3 id="quizHeaderLevel" class="text-lg font-black text-white">Tafsir Surat Pendek</h3>
+                    </div>
+                    <div class="text-right">
+                        <span id="quizProgressText" class="text-xs text-emerald-200 font-bold block mb-1">Soal 1 dari 5</span>
+                        <div class="w-24 h-2 bg-black/40 rounded-full overflow-hidden border border-emerald-500/30">
+                            <div id="quizProgressBar" class="h-full bg-amber-400 transition-all duration-300" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soal Pertanyaan -->
+                <div class="bg-black/30 border border-emerald-500/30 rounded-2xl p-5 mb-6 text-center">
+                    <p id="quizQuestionText" class="text-base md:text-lg font-bold text-white leading-relaxed">
+                        Memuat pertanyaan...
+                    </p>
+                </div>
+
+                <!-- Opsi Jawaban (A, B, C, D) -->
+                <div id="quizOptionsContainer" class="space-y-3 mb-6">
+                    <!-- Buttons di-render via game.js -->
+                </div>
+
+                <!-- Kotak Feedback Penjelasan -->
+                <div id="quizFeedbackBox" class="hidden"></div>
+
+                <div class="text-center text-[11px] text-white/50 mt-4">
+                    💡 Tips: Kamu bisa menekan angka <b>1 - 4</b> atau huruf <b>A - D</b> di keyboard untuk memilih jawaban dengan cepat!
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 5: GAMEPLAY URUTKAN (SEQUENCE)
+             ========================================== -->
+        <section id="view-gameplay-sequence" class="game-view hidden animate-fadeIn">
+            <div class="max-w-3xl mx-auto bg-emerald-950/90 border border-emerald-500/40 rounded-3xl p-6 md:p-8 shadow-2xl mb-8">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                    <div>
+                        <span id="seqHeaderIsland" class="text-xs font-bold text-amber-300 uppercase block">Pulau Fiqih</span>
+                        <h3 id="seqHeaderTitle" class="text-lg font-black text-white">Urutan Berwudhu yang Benar</h3>
+                    </div>
+                    <button onclick="window.game.openIsland(window.game.activeIsland)" class="text-xs text-white/70 hover:text-white font-bold bg-white/10 px-3 py-1.5 rounded-lg">
+                        ✕ Batal
+                    </button>
+                </div>
+
+                <p id="seqInstruction" class="text-sm text-emerald-200 font-medium mb-4">
+                    Klik item dari pilihan di bawah untuk menyusunnya ke dalam urutan yang tepat:
+                </p>
+
+                <!-- Target Susunan Terpilih -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-bold text-amber-300 uppercase mb-2">📋 Hasil Urutan Kamu:</h4>
+                    <div id="seqTargetContainer" class="min-h-[100px] p-3 bg-black/40 border-2 border-dashed border-emerald-500/30 rounded-2xl space-y-2">
+                        <!-- Slots injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Kolam Pilihan Item -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-bold text-emerald-300 uppercase mb-2">👇 Klik untuk Menambahkan:</h4>
+                    <div id="seqPoolContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Items injected dynamically -->
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="btnCheckSequence" class="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 text-emerald-950 font-black px-8 py-3.5 rounded-2xl text-sm shadow-xl transition">
+                        Periksa Susunan Urutan ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 6: GAMEPLAY JOJOKKAN PASANGAN (MATCHING)
+             ========================================== -->
+        <section id="view-gameplay-match" class="game-view hidden animate-fadeIn">
+            <div class="max-w-3xl mx-auto bg-emerald-950/90 border border-emerald-500/40 rounded-3xl p-6 md:p-8 shadow-2xl mb-8">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                    <div>
+                        <span id="matchHeaderIsland" class="text-xs font-bold text-amber-300 uppercase block">Pulau Aqidah</span>
+                        <h3 id="matchHeaderTitle" class="text-lg font-black text-white">Sifat Wajib Para Rasul</h3>
+                    </div>
+                    <button onclick="window.game.openIsland(window.game.activeIsland)" class="text-xs text-white/70 hover:text-white font-bold bg-white/10 px-3 py-1.5 rounded-lg">
+                        ✕ Batal
+                    </button>
+                </div>
+
+                <p id="matchInstruction" class="text-sm text-emerald-200 font-medium mb-6">
+                    Klik satu item di kolom kiri, lalu klik pasangannya yang tepat di kolom kanan:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-300 uppercase mb-3">1. Pilih Sifat / Tokoh:</h4>
+                        <div id="matchLeftCol" class="space-y-3">
+                            <!-- Left items -->
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-emerald-300 uppercase mb-3">2. Pilih Pasangan / Arti:</h4>
+                        <div id="matchRightCol" class="space-y-3">
+                            <!-- Right items -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 7: HASIL LEVEL (RESULT)
+             ========================================== -->
+        <section id="view-level-result" class="game-view hidden animate-fadeIn">
+            <div class="max-w-md mx-auto text-center bg-emerald-950/90 border-2 border-amber-400/50 rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="text-5xl mb-3">🌟🏆🌟</div>
+                <h3 class="text-2xl font-black text-white mb-1">Misi Berhasil Dituntaskan!</h3>
+                <p id="resultLevelTitle" class="text-xs text-amber-300 font-bold mb-6">Tafsir Surat Pendek</p>
+
+                <div class="bg-black/40 border border-emerald-500/30 rounded-2xl p-5 mb-6">
+                    <div id="resultStars" class="text-4xl tracking-widest text-yellow-400 mb-2">⭐ ⭐ ⭐</div>
+                    <div class="text-sm text-white/70 font-medium mb-3">Nilai Tambahan Skor:</div>
+                    <div id="resultScoreEarned" class="text-3xl font-black text-emerald-400">+100 Pts</div>
+                </div>
+
+                <p id="resultDescription" class="text-xs text-emerald-100 leading-relaxed mb-6">
+                    Maa Syaa Allah! Pengetahuan PAI-mu luar biasa!
+                </p>
+
+                <div class="flex gap-3 justify-center">
+                    <button id="btnResultContinue" class="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 text-emerald-950 font-black px-6 py-3 rounded-xl text-sm shadow-lg transition">
+                        Lanjut ke Pulau ➔
+                    </button>
+                    <button id="btnResultRetry" class="bg-emerald-900 hover:bg-emerald-800 text-white font-bold px-4 py-3 rounded-xl text-xs border border-emerald-500/40 transition">
+                        🔄 Ulangi Misi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 8: CERDAS CERMAT TIMER (15 DETIK)
+             ========================================== -->
+        <section id="view-cerdas-cermat" class="game-view hidden animate-fadeIn">
+            <div class="max-w-2xl mx-auto bg-emerald-950/90 border border-emerald-500/40 rounded-3xl p-6 md:p-8 shadow-2xl mb-8">
+                <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                    <div>
+                        <span id="ccCategoryBadge" class="text-xs font-bold text-amber-300 uppercase block mb-0.5">Al-Qur'an</span>
+                        <h3 id="ccQuestionIndex" class="text-lg font-black text-white">Soal 1 / 5</h3>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-center">
+                            <span class="text-[10px] text-white/60 block uppercase font-bold">Skor CC</span>
+                            <span id="ccScoreDisplay" class="text-base font-black text-amber-300">0</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[10px] text-white/60 block uppercase font-bold">Combo</span>
+                            <span id="ccComboDisplay" class="text-base font-black text-emerald-400">x1</span>
+                        </div>
+                        <button onclick="clearInterval(window.game.ccTimerInterval); window.game.showView('home');" class="text-xs text-white/70 hover:text-white font-bold bg-white/10 px-2.5 py-1.5 rounded-lg">
+                            ✕ Keluar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Timer Bar 15 Detik -->
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-lg">⏱️</span>
+                    <div class="flex-1 h-3 bg-black/40 rounded-full overflow-hidden border border-emerald-500/30">
+                        <div id="ccTimerBar" class="h-full bg-emerald-400 transition-all duration-100" style="width: 100%;"></div>
+                    </div>
+                    <span id="ccTimerText" class="text-sm font-black text-amber-300 min-w-[32px] text-right font-mono">15s</span>
+                </div>
+
+                <!-- Soal Pertanyaan Cerdas Cermat -->
+                <div class="bg-black/30 border border-emerald-500/30 rounded-2xl p-5 mb-6 text-center">
+                    <p id="ccQuestionText" class="text-base md:text-lg font-bold text-white leading-relaxed">
+                        Pertanyaan kuis kilat cerdas cermat...
+                    </p>
+                </div>
+
+                <!-- Opsi Jawaban 1-4 -->
+                <div id="ccOptionsContainer" class="space-y-3 mb-4">
+                    <!-- Buttons di-render via game.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 9: SERTIFIKAT PRESTASI DIGITAL
+             ========================================== -->
+        <section id="view-certificate" class="game-view hidden animate-fadeIn">
+            <!-- Form Pengaturan Sertifikat (Disembunyikan saat Print) -->
+            <div class="no-print max-w-3xl mx-auto bg-emerald-950/80 border border-emerald-500/30 rounded-2xl p-5 mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-4 flex-1">
+                    <div>
+                        <label class="text-[11px] text-white/70 font-bold block mb-1">Nama Lengkap Siswa:</label>
+                        <input id="certInputName" type="text" oninput="window.game.updateCertificatePreview()" class="bg-black/40 border border-emerald-500/40 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400" placeholder="Ketik nama siswa...">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-white/70 font-bold block mb-1">Asal Sekolah / Madrasah:</label>
+                        <input id="certInputSchool" type="text" oninput="window.game.updateCertificatePreview()" class="bg-black/40 border border-emerald-500/40 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-400" placeholder="Ketik nama sekolah...">
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="window.game.printCertificate()" class="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 text-emerald-950 font-black px-5 py-2.5 rounded-xl text-xs shadow-lg flex items-center gap-1.5 transition">
+                        <span>🖨️</span> Cetak / Simpan PDF
+                    </button>
+                    <button onclick="window.game.showView('home')" class="bg-emerald-900/60 hover:bg-emerald-800 text-white font-bold px-3 py-2.5 rounded-xl text-xs border border-emerald-500/30 transition">
+                        ✕ Tutup
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kartu Sertifikat Resmi (Didesain Elegan untuk Print & Layar) -->
+            <div class="cert-printable-card max-w-3xl mx-auto bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-900 border-4 border-amber-400/80 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <!-- Watermark Background -->
+                <div class="absolute -right-12 -bottom-12 text-9xl opacity-5 pointer-events-none select-none">
+                    🕌
+                </div>
+
+                <div class="text-center relative z-10">
+                    <div class="w-16 h-16 mx-auto bg-amber-400 text-emerald-950 rounded-2xl flex items-center justify-center text-3xl font-black mb-3 shadow-md border-2 border-amber-300">
+                        🕌
+                    </div>
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold block mb-1">SERTIFIKAT KELULUSAN & PENGHARGAAN</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-white tracking-wide mb-2">PENJELAJAH PAI UTAMA</h2>
+                    <p class="text-xs text-emerald-200/90 max-w-md mx-auto mb-6">
+                        Diberikan sebagai bukti kelulusan penguasaan materi Pendidikan Agama Islam & Budi Pekerti (Al-Qur'an, Aqidah, Fiqih, SKI, dan Akhlak).
+                    </p>
+
+                    <div class="my-6">
+                        <span class="text-xs text-white/60 block">Diberikan Kepada Siswa/i:</span>
+                        <h3 id="certPreviewName" class="text-2xl md:text-3xl font-black text-amber-300 border-b-2 border-amber-400/30 inline-block px-6 pb-1 my-1">
+                            Sahabat Cilik PAI
+                        </h3>
+                        <div id="certPreviewSchool" class="text-xs md:text-sm font-semibold text-white/80">
+                            SD / MI Indonesia
+                        </div>
+                    </div>
+
+                    <!-- Grid Penilaian -->
+                    <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto bg-black/40 border border-emerald-500/30 rounded-2xl p-4 my-6">
+                        <div>
+                            <span class="text-[10px] text-white/60 block uppercase font-bold">Total Skor</span>
+                            <span id="certPreviewScore" class="text-base font-black text-amber-300">0 Pts</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-white/60 block uppercase font-bold">Bintang Diraih</span>
+                            <span id="certPreviewStars" class="text-base font-black text-yellow-400">0 / 45 ⭐</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-white/60 block uppercase font-bold">Predikat</span>
+                            <span id="certPreviewPredicate" class="text-xs font-black text-emerald-400">MUMTAZ</span>
+                        </div>
+                    </div>
+
+                    <!-- Tanda Tangan & Tanggal -->
+                    <div class="flex justify-between items-end pt-6 border-t border-white/10 text-xs text-white/70 mt-8">
+                        <div class="text-left">
+                            <span>Diterbitkan Tanggal:</span>
+                            <div id="certPreviewDate" class="font-bold text-white mt-1">6 November 2026</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-14 h-14 mx-auto mb-1 rounded-full border-2 border-amber-400/40 flex items-center justify-center text-amber-300 font-black text-xs">
+                                STEMPEL
+                            </div>
+                            <span class="text-[10px]">Madrasah / Sekolah</span>
+                        </div>
+                        <div class="text-right">
+                            <span>Guru / Instruktur PAI:</span>
+                            <div class="font-bold text-white mt-8 border-t border-white/40 pt-1">
+                                Nor Anisa, S.Pd.I., M.Pd.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-5xl mx-auto w-full text-center text-xs text-emerald-200/70 pt-8 pb-4">
+        <p class="font-bold text-emerald-100">Petualangan Penjelajah PAI — Media Gamifikasi Pembelajaran Pendidikan Agama Islam</p>
+        <p class="mt-1 text-[11px]">Sesuai Capaian Pembelajaran Kurikulum Merdeka Pendidikan Agama Islam & Budi Pekerti.</p>
+        <p class="mt-2 text-[10px] text-white/40">Dibuat dengan ❤️ untuk pembelajaran generasi muslim cerdas, beriman, dan berakhlak mulia.</p>
+    </footer>
+
+    <!-- Game Scripts (Loaded in sequential dependency order) -->
+    <script src="./js/data.js"></script>
+    <script src="./js/audio.js"></script>
+    <script src="./js/game.js"></script>
+</body>
+</html>
